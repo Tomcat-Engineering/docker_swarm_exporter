@@ -4,6 +4,8 @@ Basic Prometheus exporter for a Docker Swarm.
 
 Exposes a `/metrics` HTTP endpoint for Prometheus to scrape which  has basic info on what services are running and how many tasks are in what state for each service.
 
+By default the endpoint is on port 9675 in accordance with [the Prometheus Default Port Allocations](https://github.com/prometheus/prometheus/wiki/Default-port-allocations).
+
 ## Running
 
 There are two ways that you can run this:
@@ -15,6 +17,8 @@ You can run the binary on the docker host.  It will need permission to access th
 ### Inside Docker
 
 You can run the exporter as a container inside Docker.  For this to work you have to bind-mount `/var/run/docker.sock` from the host machine into the container.  An example docker-compose file is provided.
+
+A pre-built image is [available on Docker Hub](https://hub.docker.com/r/tomcatengineering/docker_swarm_exporter).
 
 ## Metrics Exposed
 
