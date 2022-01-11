@@ -1,8 +1,8 @@
 #!/bin/bash
 set -ue
 
-# Use the git version tag if one exists, or failing that the short hash of this commit
-VERSION=$(git tag --list 'v*')
+# Use the git tag if one exists, or failing that the short hash of this commit
+VERSION=$(git tag --points-at HEAD)
 if [ -z "$VERSION" ]
 then
 	VERSION=$(git rev-parse --short HEAD)
