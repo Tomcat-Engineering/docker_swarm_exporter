@@ -13,11 +13,12 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
-	dockerClient, err := client.NewEnvClient()
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		panic(err)
 	}
@@ -28,10 +29,12 @@ func main() {
 	}
 
 	// Get rid of the stupid golang metrics
-	prometheus.Unregister(prometheus.NewGoCollector())
+	prometheus.Unregister(collectors.NewGoCollector())
 
 	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":9675", nil)
+	if err := http.ListenAndServe(":9675", nil); err != nil {
+		panic(err)
+	}
 }
 
 // DockerServices implements the Collector interface.
@@ -131,6 +134,5 @@ func (c DockerServices) Collect(ch chan<- prometheus.Metric) {
 			float64(lastTaskStatusChange.Unix()),
 			service.Spec.Annotations.Name,
 		)
-
 	}
 }
