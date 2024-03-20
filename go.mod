@@ -3,7 +3,7 @@ module github.com/Tomcat-Engineering/docker_swarm_exporter
 go 1.21
 
 require (
-	github.com/docker/docker v24.0.7+incompatible
+	github.com/docker/docker v24.0.9+incompatible
 	github.com/prometheus/client_golang v1.17.0
 )
 
